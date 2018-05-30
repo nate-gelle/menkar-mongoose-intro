@@ -2,9 +2,30 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`server listening on port ${PORT}...`));
 app.use(bodyParser.urlencoded({extended: true}));
 
-// setup router later
-// 
+// require in our mongoose model
+const Book = require('./modules/models/book.schema');
+
+// connect to Mongo DB
+const mongoose = require('mongoose');
+const DATABASE_NAME = 'library';
+const DATABASE_URL = `mongodb://localhost:27017/${DATABASE_NAME}`;
+mongoose.connect(DATABASE_URL);
+
+mongoose.connection.on('connected', () => {
+    console.log(`Mongoose is connected to ${DATABASE_URL}`);
+});
+
+mongoose.connection.on('error', (error) => {
+    console.log(`Mongoose connection error: ${error}`);
+    
+});
+// --- End of Mongo Connection stuff
+
+
+// add static files later
+// add router later
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`server listening on port ${PORT}...`));
